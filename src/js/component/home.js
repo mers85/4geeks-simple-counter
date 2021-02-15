@@ -41,7 +41,7 @@ export function Home() {
 		{ digito: digito1 }
 	];
 
-	function stopCounter() {
+	function pauseCounter() {
 		clearInterval(myInterval);
 		setMyInterval(null);
 	}
@@ -70,7 +70,8 @@ export function Home() {
 	return (
 		<div className="container mt-5">
 			<div className="row">
-				<div className="col-8 mx-auto">
+				<div className="col-8 mx-auto bg-light p-4">
+					<h2 className="text-muted text-center">Seconds Counter</h2>
 					<div className="jumbotron p-3">
 						<div className="card-deck">
 							<Card
@@ -86,7 +87,7 @@ export function Home() {
 					</div>
 					<div
 						className="btn btn-dark btn-lg text-white"
-						onClick={stopCounter}>
+						onClick={pauseCounter}>
 						<i className="fas fa-pause"></i>
 					</div>
 					<div

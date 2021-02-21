@@ -1,45 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./icons.js";
-import { Card } from "./card.js";
+import { Digits } from "./digits.js";
 
 //include images into your bundle
 
 //create your first component
 export function Home() {
 	const [myInterval, setMyInterval] = useState(null);
-	const [digito1, setDigito1] = useState(0);
-	const [digito2, setDigito2] = useState(0);
-	const [digito3, setDigito3] = useState(0);
-	const [digito4, setDigito4] = useState(0);
+	const [seconds, setSeconds] = useState("0");
 
 	useEffect(() => {
 		let interval = setInterval(function() {
-			setDigito1(digito1 => digito1 + 1);
+			setSeconds(seconds => (parseInt(seconds) + 1).toString());
 		}, 1000);
-
 		setMyInterval(interval);
 	}, []);
-
-	if (digito1 > 9) {
-		setDigito2(digito2 => digito2 + 1);
-		setDigito1(digito1 => (digito1 = 0));
-	} else if (digito2 > 9) {
-		setDigito3(digito3 => digito3 + 1);
-		setDigito2(digito2 => (digito2 = 0));
-		setDigito1(digito1 => (digito1 = 0));
-	} else if (digito3 > 9) {
-		setDigito4(digito4 => (digito4 + 1) % 10);
-		setDigito3(digito3 => (digito3 = 0));
-		setDigito2(digito2 => (digito2 = 0));
-		setDigito1(digito1 => (digito1 = 0));
-	}
-
-	const numbers = [
-		{ digito: digito4 },
-		{ digito: digito3 },
-		{ digito: digito2 },
-		{ digito: digito1 }
-	];
 
 	function pauseCounter() {
 		clearInterval(myInterval);
@@ -47,24 +22,34 @@ export function Home() {
 	}
 
 	function startCounter() {
+		clearInterval(myInterval);
 		let interval = setInterval(function() {
-			setDigito1(digito1 => digito1 + 1);
+			setSeconds(seconds => (parseInt(seconds) + 1).toString());
 		}, 1000);
 		setMyInterval(interval);
-
-		clearInterval(myInterval);
 	}
 
 	function resetCounter() {
 		clearInterval(myInterval);
 		setMyInterval(null);
 
-		setDigito1(digito1 => (digito1 = 0));
-		setDigito2(digito2 => (digito2 = 0));
-		setDigito3(digito3 => (digito3 = 0));
-		setDigito4(digito4 => (digito4 = 0));
+		setSeconds(seconds => (seconds = "0"));
 
 		startCounter();
+	}
+
+	function secondDigits() {
+		let digits = [];
+		let secondsReverse = seconds.split("").reverse();
+
+		for (let i = 5; i >= 0; i--) {
+			if (seconds[i] === "undefined") {
+				digits = [...digits, "0"]; //¿Por qué no funciona?, tuve que usar un condicional ternario para imprimir el cero cuando no existe un valor
+			} else {
+				digits = [...digits, secondsReverse[i]];
+			}
+		}
+		return digits;
 	}
 
 	return (
@@ -74,13 +59,15 @@ export function Home() {
 					<h2 className="text-muted text-center">Seconds Counter</h2>
 					<div className="jumbotron p-3">
 						<div className="card-deck">
-							<Card
-								iconReloj={<i className="far fa-clock"></i>}
-							/>
-							{numbers.map((number, index) => (
-								<Card
-									key={"digito" + [index]}
-									number={number.digito}
+							<div className="card m-0 py-2">
+								<h2 className="card-title text-center text-white">
+									{<i className="far fa-clock"></i>}
+								</h2>
+							</div>
+							{secondDigits().map((digit, index) => (
+								<Digits
+									key={index}
+									digit={digit ? digit : "0"}
 								/>
 							))}
 						</div>

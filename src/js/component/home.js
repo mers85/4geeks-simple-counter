@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./icons.js";
 import { Digits } from "./digits.js";
 
-//include images into your bundle
-
-//create your first component
 export function Home() {
 	const [myInterval, setMyInterval] = useState(null);
 	const [seconds, setSeconds] = useState("0");
@@ -15,6 +12,10 @@ export function Home() {
 		}, 1000);
 		setMyInterval(interval);
 	}, []);
+
+	if (seconds === "999999") {
+		resetCounter();
+	}
 
 	function pauseCounter() {
 		clearInterval(myInterval);
@@ -33,7 +34,7 @@ export function Home() {
 		clearInterval(myInterval);
 		setMyInterval(null);
 
-		setSeconds(seconds => (seconds = "0"));
+		setSeconds("0");
 
 		startCounter();
 	}

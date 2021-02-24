@@ -13,9 +13,6 @@ export function Home() {
 		setMyInterval(interval);
 	}, []);
 
-	if (seconds === "999999") {
-		resetCounter();
-	}
 
 	function pauseCounter() {
 		clearInterval(myInterval);
@@ -37,6 +34,10 @@ export function Home() {
 		setSeconds("0");
 
 		startCounter();
+    }
+    
+    if (seconds === "999999") {
+		resetCounter();
 	}
 
 	function secondDigits() {
